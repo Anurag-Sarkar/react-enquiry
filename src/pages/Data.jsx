@@ -1,9 +1,9 @@
 // import {useEffect} from 'react'
-
 import { useEffect, useState } from "react"
 import { axiosInstance } from "../utils/axios"
 import { SyncLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom"
+import DataRow from "../components/DataRow"
 
 const Data = () => {
     const navigate = useNavigate()
@@ -19,7 +19,6 @@ const Data = () => {
     const [feedbackArray, setFeedbackArray] = useState([])
     const [fetchingData, setFetchingData] = useState(false)
 
-
     useEffect(() => {
         async function getFeedback() {
             try {
@@ -32,12 +31,12 @@ const Data = () => {
             } catch (err) {
                 console.log(err)
             }
-
         }
         getFeedback()
     }, [course, joining, contacted, year, fromDate, toDate, page])
 
     async function updateContactStatus(id, contacted) {
+        console.log(id,contacted)
         const data = await axiosInstance.post("/contact", { id, contacted })
         console.log(data)
     }
@@ -72,6 +71,7 @@ const Data = () => {
                             <th className="w-[20%] text-sm px-3 py-5 border-b-[1px] border-neutral-800 border-solid font-normal">
                                 <select onChange={(e) => setCourse(e.target.value)} className="bg-transparent outline-none">
                                     <option value="">Course</option>
+                                    cour
                                     <option value="java">Java</option>
                                     <option value="python">Python</option>
                                     <option value="web dev">Web Dev</option>
@@ -97,7 +97,7 @@ const Data = () => {
                             <th className="w-[15%] text-sm px-3 py-5 border-b-[1px] border-neutral-800 border-solid font-normal">Date</th>
                             <th className="w-[15%] text-sm px-3 py-5 border-b-[1px] border-neutral-800 border-solid font-normal">
                                 <select onChange={(e) => setContacted(e.target.value)} className="outline-none bg-transparent">
-                                    <option value="not_contacted">Not Contacted</option>
+                                    <option value="">Not Contacted</option>
                                     <option value="contacted">Contacted</option>
                                     <option value="didnt_pick">Didn't Pickup</option>
                                     <option value="out_of_service">Out of service</option>
@@ -107,22 +107,7 @@ const Data = () => {
                         </tr>
                         {fetchingData ? <div ><SyncLoader className="absolute left-1/2 translate-x-[-50%] top-[50%]" color="white" /></div> : feedbackArray.map((data, index) => {
                             return (
-                                <tr key={index}>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 pl-8 border-b-[1px] border-neutral-800 border-solid capitalize">{((page - 1) * 15) + (index + 1)}. {data.name}</td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 border-b-[1px] border-neutral-800 border-solid text-center">{data.phone}</td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 border-b-[1px] border-neutral-800 border-solid text-center capitalize ">{data.course.join(", ")}</td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 border-b-[1px] border-neutral-800 border-solid text-center capitalize">{data.year}</td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 border-b-[1px] border-neutral-800 border-solid text-center">{new Date(data.date).toLocaleDateString('en-GB', { day: 'numeric', month: "short", year: "2-digit" })}</td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 border-b-[1px] border-neutral-800 border-solid text-center">
-                                        <select onChange={(e) => updateContactStatus(data._id, e.target.value)} className="outline-none bg-transparent">
-                                            <option selected={data.contacted == 'not_contacted'} value="not_contacted">Not Contacted</option>
-                                            <option selected={data.contacted == 'contacted'} value="contacted">Contacted</option>
-                                            <option selected={data.contacted == 'didnt_pick'} value="didnt_pick">Didn't Pickup</option>
-                                            <option selected={data.contacted == 'out_of_service'} value="out_of_service">Out of service</option>
-                                        </select>
-                                    </td>
-                                    <td className="text-sm font-normal text-neutral-400 px-3 py-6 pr-8 border-b-[1px] border-neutral-800 border-solid text-center">{data.count ? data.count : 1}</td>
-                                </tr>
+                              <DataRow key={index} page={page} index={index} data={data} onChange={updateContactStatus}/>
                             )
                         }
                         )}
