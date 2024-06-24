@@ -82,7 +82,7 @@ const Enquiery = () => {
       <>
           <div className="mx-auto max-w-[60rem] p-5">
             <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.5}}>    
-              <h1 className="mt-6 mb-12 text-2xl md:text-4xl font-neue text-neutral-300">Info Form</h1>
+              <h1 className="mt-6 text-2xl md:text-4xl font-neue text-neutral-300">Info Form</h1>
               <div className='mt-10'>
                 <Input type={"text"} value={name} err={nameErr} func={handleNameInput} title={'Full Name'} placeholder={"Enter your name"}/>
                 <Input type={"tel"} value={contact} err={contactErr} func={handelContactInput} title={'Contact Number'} placeholder={"Enter your phone number"}/>    

@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react"
 import { axiosInstance } from "../utils/axios"
 import { SyncLoader } from 'react-spinners'
+import { useNavigate } from "react-router-dom"
 
 const Data = () => {
+    const navigate = useNavigate()
 
     const [course, setCourse] = useState("")
     const [joining, setJoining] = useState("")
@@ -42,7 +44,8 @@ const Data = () => {
 
     return (
         <div className='p-8'>
-            <div >
+            <div className="flex items-start gap-3">
+                <div onClick={()=>navigate("/enquiry")} className="w-7 h-7 border-[1px] flex justify-center items-center border-white rounded-full"><i className="ri-arrow-left-line"></i></div>
                 <h1 className='text-2xl font-neue'>Info Form Data</h1>
             </div>
             <div className="w-full mt-5 overflow-hidden rounded-lg">
